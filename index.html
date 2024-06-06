@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Filter Wholesale</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer data-domain="daswholesale.netlify.app" src="https://poopup.co/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Place order button click event
+            document.getElementById('placeOrderButton').addEventListener('click', function () {
+                let lineItems = [];
+                for (let i = 1; i <= 9; i++) {
+                    const qty = parseInt(document.getElementById(`quantity-product${i}`).value);
+                    const productId = document.querySelector(`.product-card[data-quality="${i}"]`).getAttribute('data-stripe-id');
+                    if (qty > 0) {
+                        lineItems.push({ "product_id": productId, "quantity": qty });
+                    }
+                }
+
+                const data = { "line_items": lineItems };
+
+                console.log("DEBUG ", data);
+
+                fetch('https://api.retool.com/v1/workflows/32059113-402d-4da0-9bfc-4d474399ee7a/startTrigger?workflowApiKey=retool_wk_0aa23216eb184b95ae57d318ccc471a6', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        window.location.replace(data.result.url);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            });
+
+            // Function to calculate total price
+            function calculateTotalPrice() {
+                console.log('Calculating total price...');
+                let totalPrice = 0;
+                const productCards = document.querySelectorAll('.product-card');
+                if (productCards.length === 0) {
+                    console.log('No product cards found.');
+                    return;
+                }
+                productCards.forEach(card => {
+                    const price = parseFloat(card.getAttribute('data-price'));
+                    const quantityInput = card.querySelector('input[type="number"]');
+                    const quantity = parseInt(quantityInput.value, 10);
+                    if (!isNaN(price) && !isNaN(quantity)) {
+                        totalPrice += price * quantity;
+                    }
+                });
+                console.log(`Total Price: $${totalPrice}`);
+                document.getElementById('totalPriceField').value = '$' + totalPrice.toFixed(2);
+
+                if (totalPrice >= 250) {
+                    document.getElementById('placeOrderButton').style.display = 'block';
+                } else {
+                    document.getElementById('placeOrderButton').style.display = 'none';
+                }
+            }
+
+            // Initial total price calculation and event listeners for quantity inputs
+            calculateTotalPrice();
+            for (let i = 1; i <= 9; i++) {
+                const id = `quantity-product${i}`;
+                document.getElementById(id).addEventListener('change', calculateTotalPrice);
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <header class="site-banner">
+        <img src="https://das-filter.s3.amazonaws.com/zz.png" alt="Banner Image" class="banner-image">
+    </header>
+    <h1>Product Catalog</h1>
+    <div class="container">
+
+        <h2>Glass Jars of 40</h2>
+        <div class="row">
+            <div class="product-card" data-quality="4" data-price="10" data-stripe-id="prod_Pk9jgVAculuGcg">
+                <img src="https://das-filter.s3.amazonaws.com/dbb.png" alt="Big Boy">
+                <h3>Big Boy</h3>
+                <p>$10.00</p>
+                <p class="description">For large joints and blunts</p>
+                <div class="quantity">
+                    <label for="quantity-product4"></label>
+                    <input type="number" id="quantity-product4" name="quantity-product4" value="0" min="0">
+                </div>
+            </div>
+            <div class="product-card" data-quality="5" data-price="10" data-stripe-id="prod_Pk9kJmjlOtyQKD">
+                <img src="https://das-filter.s3.amazonaws.com/mwg.png" alt="Midway">
+                <h3>Midway</h3>
+                <p>$10.00</p>
+                <p class="description">Perfect for all paper sizes</p>
+                <div class="quantity">
+                    <label for="quantity-product5"></label>
+                    <input type="number" id="quantity-product5" name="quantity-product5" value="0" min="0">
+                </div>
+            </div>
+            <div class="product-card" data-quality="6" data-price="10" data-stripe-id="prod_Pk9lMLJ9fyp1mk">
+                <img src="https://das-filter.s3.amazonaws.com/dfsj.png" alt="Slim Jim">
+                <h3>Slim Jim</h3>
+                <p>$10.00</p>
+                <p class="description">For the dog walkers and lil guys</p>
+                <div class="quantity">
+                    <label for="quantity-product6"></label>
+                    <input type="number" id="quantity-product6" name="quantity-product6" value="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <h2>Paper Boxes of 20</h2>
+        <div class="row">
+            <div class="product-card" data-quality="1" data-price="5" data-stripe-id="prod_Pg2Ru8zxcUtAly">
+                <img src="https://das-filter.s3.amazonaws.com/bbp.png" alt="Big Boy">
+                <h3>Big Boy</h3>
+                <p>$5.00</p>
+                <p class="description">Large jays and blunts</p>
+                <div class="quantity">
+                    <label for="quantity-product1"></label>
+                    <input type="number" id="quantity-product1" name="quantity-product1" value="0" min="0">
+                </div>
+            </div>
+            <div class="product-card" data-quality="2" data-price="5" data-stripe-id="prod_Pg2PAeWuJPvzO0">
+                <img src="https://das-filter.s3.amazonaws.com/loa.png" alt="Midway">
+                <h3>Midway</h3>
+                <p>$5.00</p>
+                <p class="description">Perfect for all paper sizes</p>
+                <div class="quantity">
+                    <label for="quantity-product2"></label>
+                    <input type="number" id="quantity-product2" name="quantity-product2" value="0" min="0">
+                </div>
+            </div>
+            <div class="product-card" data-quality="3" data-price="5" data-stripe-id="prod_Pg2OnEDLsIkgKz">
+                <img src="https://das-filter.s3.amazonaws.com/r2.png" alt="Slim Jim">
+                <h3>Slim Jim</h3>
+                <p>$5.00</p>
+                <p class="description">For the dog walkers and lil guys</p>
+                <div class="quantity">
+                    <label for="quantity-product3"></label>
+                    <input type="number" id="quantity-product3" name="quantity-product3" value="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <h2>Das Papers</h2>
+        <div class="row">
+            <div class="product-card" data-quality="7" data-price="3" data-stripe-id="prod_Pg2SE0tlmZaU7E">
+                <img src="https://das-filter.s3.amazonaws.com/cones.png" alt="Das Cones">
+                <h3>Das Cones</h3>
+                <p>$3.00</p>
+                <p class="description">6 pre-rolled cones with midway filters</p>
+                <div class="quantity">
+                    <label for="quantity-product7"></label>
+                    <input type="number" id="quantity-product7" name="quantity-product7" value="0" min="0">
+                </div>
+            </div>
+            <div class="product-card" data-quality="8" data-price="1.50" data-stripe-id="prod_Pg2XWVfEyFJC1n">
+                <img src="https://das-filter.s3.amazonaws.com/qs1.png" alt="Quarter Slim">
+                <h3>Quarter Slim</h3>
+                <p>$1.50</p>
+                <p class="description">1 & 1/4 slim rolling papers</p>
+                <div class="quantity">
+                    <label for="quantity-product8"></label>
+                    <input type="number" id="quantity-product8" name="quantity-product8" value="0" min="0">
+                </div>
+            </div>
+            <div class="product-card" data-quality="9" data-price="1.50" data-stripe-id="prod_Pg2WJHin6BvKwb">
+                <img src="https://das-filter.s3.amazonaws.com/dpks.png" alt="King Slim">
+                <h3>King Slim</h3>
+                <p>$1.50</p>
+                <p class="description">King Slim rolling papers</p>
+                <div class="quantity">
+                    <label for="quantity-product9"></label>
+                    <input type="number" id="quantity-product9" name="quantity-product9" value="0" min="0">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div>Total Price: <input id="totalPriceField" type="text" readonly value="$0"></div>
+        </div>
+        <button id="placeOrderButton" style="display:none;">Place Order</button>
+    </div>
+</div>
+<footer>
+    <p>&copy; 2024 Das Filter. All rights reserved.</p>
+    <p>Minimum order: $250</p>
+    <p>
+        <a href="https://Dasfilter.shop" target="_blank">b2c website</a> | 
+        <a href="mailto:info@dasfilter.co">email</a>
+    </p>
+</footer>
+</div>
+<h1>Testimonials</h1>
+</div>
+<iframe height="800px" id='testimonialto-das-filter-tag-all-light-animated' src="https://embed-v2.testimonial.to/w/das-filter?animated=on&theme=light&shadowColor=f7f7f7&speed=1&tag=all" frameborder="0" scrolling="no" width="100%"></iframe>
+</div>
+<div class="striped-bg"></div>
+<!-- 100% privacy-first analytics -->
+<script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+</body>
+
+</html>
