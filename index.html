@@ -13,7 +13,7 @@
             // Place order button click event
             document.getElementById('placeOrderButton').addEventListener('click', function () {
                 let lineItems = [];
-                for (let i = 1; i <= 8; i++) { // Changed to 8 as we have 8 products now
+                for (let i = 1; i <= 9; i++) { // Changed to 8 as we have 8 products now
                     const qty = parseInt(document.getElementById(`quantity-product${i}`).value);
                     const productCard = document.querySelector(`.product-card[data-quality="${i}"]`);
                     if (productCard) {
@@ -168,7 +168,6 @@
                 </div>
             </div>
         </div>
-
         <h2>Das Papers</h2>
         <div class="row">
             <div class="product-card" data-quality="7" data-price="1.50" data-stripe-id="prod_Pg2XWVfEyFJC1n">
@@ -192,6 +191,16 @@
                 </div>
             </div>
         </div>
+            <div class="product-card" data-quality="9" data-price="5.00" data-stripe-id="prod_Pg2SE0tlmZaU7E">
+                <img src="https://das-filter.s3.amazonaws.com/cones.png" alt="Quarter Slim">
+                <h3>Das Cones</h3>
+                <p>$5.00</p>
+                <p class="description">Organic banana leaf cones hand rolled in mexico with midway filter tip</p>
+                <div class="quantity">
+                    <label for="quantity-product9"></label>
+                    <input type="number" id="quantity-product9" name="quantity-product9" value="0" min="0">
+                </div>
+            </div>
 
         <div class="row">
             <div>Total Price: <input id="totalPriceField" type="text" readonly value="$0"></div>
