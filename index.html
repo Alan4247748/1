@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Das Filter Wholesale</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script>
+function handleCredentialResponse(response) {
+    // Decode the credential response
+    const responsePayload = JSON.parse(atob(response.credential.split('.')[1]));
+    
+    console.log('ID: ' + responsePayload.sub);
+    console.log('Name: ' + responsePayload.name);
+    console.log('Image URL: ' + responsePayload.picture);
+    console.log('Email: ' + responsePayload.email);
+    console.log('Attempting to redirect to dashboard');
+    
+    // You may want to send this token to your server for verification before redirecting
+    window.location.href = 'https://wholesaleapi.dasfilter.shop/dashboard.html';
+}
+
+function renderButton() {
+    google.accounts.id.initialize({
+        client_id: '<?php echo getenv("GOOGLE_CLIENT_ID"); ?>',
+        callback: handleCredentialResponse
+    });
+    google.accounts.id.renderButton(
+        document.getElementById('google-signin-button'),
+        { theme: 'outline', size: 'large' } // customization attributes
+    );
+}
+</script>
+</head>
+<body onload="renderButton()">
+<nav>
+<ul>
+<li><a href="https://wholesaleapi.dasfilter.shop">Home</a></li>
+<li><a href="https://dasfilter.shop">B2C</a></li>
+<li><a href="https://testimonial.to/das-filter/all">Fans</a></li>
+<li><a href="/login.php" id="dashboard-link">Login</a></li>
+<li>
+<div id="google-signin-button"
+    hx-post="/verify-google-token"
+    hx-trigger="google-sign-in-success"
+    hx-target="#user-info">
+    <!-- Google Sign-In button will be rendered here -->
+</div>
+</li>
+</ul>
+</nav>
+</head>
+    <h1>Product Catalog</h1>
+    <div class="row">
+        <h2>40 Count Cases</h2>
+        <div class="product-card" data-quality="1" data-price="120" data-stripe-id="prod_Pk9jgVAculuGcg">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="https://das-filter.s3.amazonaws.com/bbc.png" alt="Big Boy Glass Case - Front View">
+                    </div>
+                    <div class="back">
+                        <img src="https://das-filter.s3.amazonaws.com/bbp2.png" alt="Big Boy Glass Case - Back View">
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Big Boy</h3>
+                <p>$120.00</p>
+                <p>12 glass jars per case (40 count) each 8mm by 37mm for large joints and blunts</p>
+                <div class="quantity">
+                    <label for="quantity-big-boy-glass">Quantity:</label>
+                    <input type="number" id="quantity-big-boy-glass" name="quantity-big-boy-glass" value="0" min="0" max="100">
+                </div>
+            </div>
+        </div>
+        <div class="product-card" data-quality="2" data-price="120" data-stripe-id="prod_Pk9lMLJ9fyp1mk">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="https://das-filter.s3.amazonaws.com/sj1.png" alt="Slim Jim Glass Case - Front View">
+                    </div>
+                    <div class="back">
+                        <img src="https://das-filter.s3.amazonaws.com/sj2.png" alt="Slim Jim Glass Case - Back View">
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Slim Jim</h3>
+                <p>$120.00</p>
+                <p>12 glass jars per case each (40 count) 6mm by 27mm for the dog walkers and lil guys</p>
+                <div class="quantity">
+                    <label for="quantity-slim-jim-glass">Quantity:</label>
+                    <input type="number" id="quantity-slim-jim-glass" name="quantity-slim-jim-glass" value="0" min="0" max="100">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <h2>20 Count Cases</h2>
+        <div class="product-card" data-quality="3" data-price="60" data-stripe-id="prod_Pg2Ru8zxcUtAly">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="https://das-filter.s3.amazonaws.com/sj1.png" alt="Big Boy Paper Case - Front View">
+                    </div>
+                    <div class="back">
+                        <img src="https://das-filter.s3.amazonaws.com/sj2.png" alt="Big Boy Paper Case - Back View">
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Big Boy</h3>
+                <p>$60.00</p>
+                <p>12 paper boxes of (20 count) for large jays and blunts</p>
+                <div class="quantity">
+                    <label for="quantity-big-boy-paper">Quantity:</label>
+                    <input type="number" id="quantity-big-boy-paper" name="quantity-big-boy-paper" value="0" min="0" max="100">
+                </div>
+            </div>
+        </div>
+        <div class="product-card" data-quality="4" data-price="60" data-stripe-id="prod_Pg2OnEDLsIkgKz">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="https://das-filter.s3.amazonaws.com/r3.png" alt="Slim Jim Paper Case - Front View">
+                    </div>
+                    <div class="back">
+                        <img src="https://das-filter.s3.amazonaws.com/r3-back.png" alt="Slim Jim Paper Case - Back View">
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>Slim Jim</h3>
+                <p>$60.00</p>
+                <p>12 paper boxes of (20 count) for the dog walkers and lil guys</p>
+                <div class="quantity">
+                    <label for="quantity-slim-jim-paper">Quantity:</label>
+                    <input type="number" id="quantity-slim-jim-paper" name="quantity-slim-jim-paper" value="0" min="0" max="100">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <h2>50 Count Cases</h2>
+        <div class="product-card" data-quality="5" data-price="75" data-stripe-id="prod_Pg2XWVfEyFJC1n">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="https://das-filter.s3.amazonaws.com/qs1.png" alt="Quarter Slim - Front View">
+                    </div>
+                    <div class="back">
+                        <img src="https://das-filter.s3.amazonaws.com/quarterb.png" alt="Quarter Slim - Back View">
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>1 & 1/4 Quarter Slim</h3>
+                <p>$75.00</p>
+                <p>50 booklets per case 32 papers per booklet</p>
+                <div class="quantity">
+                    <label for="quantity-quarter-slim">Quantity:</label>
+                    <input type="number" id="quantity-quarter-slim" name="quantity-quarter-slim" value="0" min="0" max="100">
+                </div>
+            </div>
+        </div>
+        <div class="product-card" data-quality="6" data-price="75" data-stripe-id="prod_Pg2WJHin6BvKwb">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <img src="https://das-filter.s3.amazonaws.com/dpks.png" alt="King Slim - Front View">
+                    </div>
+                    <div class="back">
+                        <img src="https://das-filter.s3.amazonaws.com/kksback.png" alt="King Slim - Back View">
+                    </div>
+                </div>
+            </div>
+            <div class="product-info">
+                <h3>King Slim</h3>
+                <p>$75.00</p>
+                <p>50 booklets per case 32 papers per booklet</p>
+                <div class="quantity">
+                    <label for="quantity-king-slim">Quantity:</label>
+                    <input type="number" id="quantity-king-slim" name="quantity-king-slim" value="0" min="0" max="100">
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        <div class="row">
+            <button id="placeOrderButton" onclick="window.location.href='https://buy.stripe.com/14k9AX5817txcgg3d3';">Place Order</button>
+        </div>
+        <h1>Testimonials</h1>
+        <iframe height="800px" id='testimonialto-das-filter-tag-all-light-animated' src="https://embed-v2.testimonial.to/w/das-filter?animated=on&theme=light&shadowColor=f7f7f7&speed=1&tag=all" frameborder="0" scrolling="no" width="100%"></iframe>
+
+        <footer>
+            <p>&copy; <span id="current-year"></span> Das Filter. All rights reserved.</p>
+           <p>Minimum order: $250</p>
+           <p>
+           <a href="https://Dasfilter.shop" target="_blank">B2C Website</a> |
+           <a href="mailto:info@dasfilter.co">Email</a> |
+           <a href="tel:+17373348042">Call</a>
+           </p>
+           </footer>
+           <div class="striped-bg"></div>
+           </body>
+           </html>
+        

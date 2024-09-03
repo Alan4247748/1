@@ -1,0 +1,253 @@
+@import url('https://fonts.cdnfonts.com/css/apple-garamond');
+
+/* General Styles */
+body {
+    font-family: 'Apple Garamond', serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #0d0d0d;
+}
+
+h1, h2 {
+    color: #f8f4f4;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.8em;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    flex: 0 1 calc(33.333% - 30px);
+    min-width: 250px;
+    max-width: 350px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Flip Container Styles */
+.flip-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    perspective: 1000px;
+    margin-bottom: 15px;
+}
+
+.flipper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.front, .back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.flip-container:hover .flipper,
+.flip-container:focus .flipper {
+    transform: rotateY(180deg);
+}
+
+.front img, .back img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-card h3 {
+    font-size: 1.3em;
+    margin: 10px 0;
+}
+
+.product-card p {
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.product-card .quantity input {
+    width: 60px;
+    text-align: center;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+/* Testimonials Styles */
+iframe {
+    border: 0;
+}
+
+/* Footer Styles */
+footer {
+    text-align: center;
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #000000;
+    color: #fff;
+}
+
+footer p {
+    margin: 5px 0;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    font-family: 'Apple Garamond', sans-serif;
+    transition: color 0.3s;
+    padding: 9px 13px;
+}
+
+footer a {
+    color: #f5f5f5;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    font-family: 'Apple Garamond', sans-serif;
+    transition: color 0.3s;
+    padding: 9px 13px;
+    white-space: nowrap;
+}
+
+footer a:hover {
+    text-decoration: underline;
+        color: #FFFF00;
+        text-shadow: 0 0 5px #FFFF00;
+    }
+
+
+.striped-bg {
+    background-image: repeating-linear-gradient(
+      to bottom,
+      #000 0px,
+      #000 5px,
+      #fff 5px,
+      #fff 10px
+    );
+    height: 200px;
+    width: 100%;
+}
+
+#placeOrderButton {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: none;
+    background-image: linear-gradient(45deg, #4CAF50, #50007a);
+    box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    transform: translateY(2px);
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+#placeOrderButton:hover {
+    background-color: #45a049;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+/* Navigation Styles */
+nav {
+    background-color: #000000;
+    color: #fff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+nav li {
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    font-size: 16px;
+    transition: color 0.3s ease;
+    text-decoration: none;
+    font-family: 'Apple Garamond', sans-serif;
+    transition: color 0.3s;
+    padding: 9px 13px;
+    white-space: nowrap; /* Prevent text wrapping */
+    }
+    
+    .nav-links a:hover {
+        color: #FFFF00;
+        text-shadow: 0 0 5px #FFFF00;
+    }
+
+nav a:hover {
+    color: #05f76a;
+}
+
+#google-signin-button {
+    margin-right: auto;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .product-card {
+        flex: 0 1 calc(50% - 30px);
+    }
+}
+
+@media (max-width: 480px) {
+    .product-card {
+        flex: 0 1 100%;
+    }
+}
