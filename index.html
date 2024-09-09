@@ -6,6 +6,7 @@
     <title>Das Filter Wholesale</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
     <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     <script defer data-domain="wholesaleapi.dasfilter.shop" src="https://plausible.io/js/script.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
     <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
@@ -17,6 +18,7 @@
             <li><a href="https://dasfilter.shop">B2C</a></li>
             <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
             <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
+            <button id="logout-button" style="display: none;">Logout</button>
             <li><div id="g-signin-button"></div></li>
         </ul>
     </nav>
@@ -25,34 +27,46 @@
             const userObject = jwt_decode(response.credential);
             console.log('Name: ' + userObject.name);
             console.log('Email: ' + userObject.email);
+            // Redirect to dashboard
             window.location.href = '/dashboard.html';
         }
 
         function startGoogleSignIn() {
             google.accounts.id.initialize({
-                client_id: '867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
+                client_id: '867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com', // Replace with your client ID
                 callback: handleCredentialResponse
             });
             google.accounts.id.renderButton(
                 document.getElementById('g-signin-button'),
                 { theme: 'outline', size: 'large' } // Customize button style
             );
-        }
-         // Check login status on page load
-         const isLoggedIn = localStorage.getItem('loggedIn');
-            if (isLoggedIn === 'true') {
-                window.location.href = '/dashboard.html';
-            }
 
-        window.onload = startGoogleSignIn;
+            // Check login status on page load
+            const isLoggedIn = localStorage.getItem('loggedIn');
+            if (isLoggedIn === 'true') {
+                document.getElementById('g-signin-button').style.display = 'none';
+                document.getElementById('logout-button').style.display = 'block';
+            } else {
+                document.getElementById('g-signin-button').style.display = 'block';
+                document.getElementById('logout-button').style.display = 'none';
+            }
+        }
+
         function logout() {
             google.accounts.id.revoke('867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com', function () {
                 console.log('Logged out');
-                window.location.href = '/'; // Redirect to home or login page after logout
+                localStorage.removeItem('loggedIn'); // Remove login flag
+                document.getElementById('g-signin-button').style.display = 'block';
+                document.getElementById('logout-button').style.display = 'none';
+                window.location.href = '/'; // Redirect to home or another page
             });
         }
+
+        window.onload = startGoogleSignIn;
+
+        document.getElementById('logout-button').addEventListener('click', logout);
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
+</body>
 
     <h1>Product Catalog</h1>
     <div class="row">
