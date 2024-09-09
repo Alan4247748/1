@@ -188,7 +188,23 @@
             window.location.href = '/dashboard.html';
         }
 
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        function handleGoogleSignIn() {
+            window.gapi.load('auth2', function() {
+                const auth2 = window.gapi.auth2.init({
+                    client_id: 'Y867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
+                    scope: 'profile email'
+                });
+                
+                auth2.attachClickHandler(document.getElementById('g-signin2'), {}, onSignIn, function(error) {
+                    console.log(JSON.stringify(error));
+                });
+            });
+        }
+
+        window.onload = function() {
+            handleGoogleSignIn();
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        };
     </script>
 </body>
 </html>
