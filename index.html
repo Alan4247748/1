@@ -38,10 +38,15 @@
                 { theme: 'outline', size: 'large' } // Customize button style
             );
         }
+         // Check login status on page load
+         const isLoggedIn = localStorage.getItem('loggedIn');
+            if (isLoggedIn === 'true') {
+                window.location.href = '/dashboard.html';
+            }
 
         window.onload = startGoogleSignIn;
         function logout() {
-            google.accounts.id.revoke('YOUR_CLIENT_ID', function () {
+            google.accounts.id.revoke('867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com', function () {
                 console.log('Logged out');
                 window.location.href = '/'; // Redirect to home or login page after logout
             });
