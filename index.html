@@ -18,7 +18,7 @@
             <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
             <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
             <li>
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <div id="g-signin2" data-onsuccess="onSignIn"></div>
                 <!-- Google Sign-In button will be rendered here -->
             </li>
         </ul>
@@ -179,6 +179,11 @@
     <div class="striped-bg"></div>
     <script>
         function onSignIn(googleUser) {
+            // Extract user profile info or handle sign-in logic here
+            const profile = googleUser.getBasicProfile();
+            console.log('Name: ' + profile.getName());
+            console.log('Email: ' + profile.getEmail());
+
             // Redirect to dashboard after successful Google Sign-In
             window.location.href = '/dashboard.html';
         }
@@ -187,4 +192,3 @@
     </script>
 </body>
 </html>
-
