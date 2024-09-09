@@ -17,12 +17,32 @@
             <li><a href="https://dasfilter.shop">B2C</a></li>
             <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
             <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
-            <li>
-                <div id="g-signin2" data-onsuccess="onSignIn"></div>
-                <!-- Google Sign-In button will be rendered here -->
-            </li>
+            <li><div id="g-signin-button"></div></li>
         </ul>
     </nav>
+    <script>
+        function handleCredentialResponse(response) {
+            const userObject = jwt_decode(response.credential);
+            console.log('Name: ' + userObject.name);
+            console.log('Email: ' + userObject.email);
+            window.location.href = '/dashboard.html';
+        }
+
+        function startGoogleSignIn() {
+            google.accounts.id.initialize({
+                client_id: 'Y867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
+                callback: handleCredentialResponse
+            });
+            google.accounts.id.renderButton(
+                document.getElementById('g-signin-button'),
+                { theme: 'outline', size: 'large' } // Customize button style
+            );
+        }
+
+        window.onload = startGoogleSignIn;
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
+
     <h1>Product Catalog</h1>
     <div class="row">
         <h2>40 Count Cases</h2>
@@ -165,8 +185,10 @@
     <div class="row">
         <button id="placeOrderButton" onclick="window.location.href='https://buy.stripe.com/14k9AX5817txcgg3d3';">Place Order</button>
     </div>
+    
     <h1>Testimonials</h1>
     <iframe height="800px" id='testimonialto-das-filter-tag-all-light-animated' src="https://embed-v2.testimonial.to/w/das-filter?animated=on&theme=light&shadowColor=f7f7f7&speed=1&tag=all" frameborder="0" scrolling="no" width="100%"></iframe>
+    
     <footer>
         <p>&copy; <span id="current-year"></span> Das Filter. All rights reserved.</p>
         <p>Minimum order: $250</p>
@@ -177,34 +199,10 @@
         </p>
     </footer>
     <div class="striped-bg"></div>
+    
     <script>
-        function onSignIn(googleUser) {
-            // Extract user profile info or handle sign-in logic here
-            const profile = googleUser.getBasicProfile();
-            console.log('Name: ' + profile.getName());
-            console.log('Email: ' + profile.getEmail());
-
-            // Redirect to dashboard after successful Google Sign-In
-            window.location.href = '/dashboard.html';
-        }
-
-        function handleGoogleSignIn() {
-            window.gapi.load('auth2', function() {
-                const auth2 = window.gapi.auth2.init({
-                    client_id: 'Y867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
-                    scope: 'profile email'
-                });
-                
-                auth2.attachClickHandler(document.getElementById('g-signin2'), {}, onSignIn, function(error) {
-                    console.log(JSON.stringify(error));
-                });
-            });
-        }
-
-        window.onload = function() {
-            handleGoogleSignIn();
-            document.getElementById('current-year').textContent = new Date().getFullYear();
-        };
+        // Update the current year in the footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
     </script>
 </body>
 </html>
