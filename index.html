@@ -8,24 +8,21 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
     <script defer data-domain="wholesaleapi.dasfilter.shop" src="https://plausible.io/js/script.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
-<script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-
-
+    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 </head>
-<nav>
-<ul>
-<li><a href="https://wholesaleapi.dasfilter.shop">Home</a></li>
-<li><a href="https://dasfilter.shop">B2C</a></li>
-<li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
-<li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
-<li>
-<div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <!-- Google Sign-In button will be rendered here -->
-</div>
-</li>
-</ul>
-</nav>
-</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="https://wholesaleapi.dasfilter.shop">Home</a></li>
+            <li><a href="https://dasfilter.shop">B2C</a></li>
+            <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
+            <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
+            <li>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                <!-- Google Sign-In button will be rendered here -->
+            </li>
+        </ul>
+    </nav>
     <h1>Product Catalog</h1>
     <div class="row">
         <h2>40 Count Cases</h2>
@@ -164,30 +161,30 @@
             </div>
         </div>
     </div>
-        
-        <div class="row">
-            <button id="placeOrderButton" onclick="window.location.href='https://buy.stripe.com/14k9AX5817txcgg3d3';">Place Order</button>
-        </div>
-        <h1>Testimonials</h1>
-        <iframe height="800px" id='testimonialto-das-filter-tag-all-light-animated' src="https://embed-v2.testimonial.to/w/das-filter?animated=on&theme=light&shadowColor=f7f7f7&speed=1&tag=all" frameborder="0" scrolling="no" width="100%"></iframe>
+    
+    <div class="row">
+        <button id="placeOrderButton" onclick="window.location.href='https://buy.stripe.com/14k9AX5817txcgg3d3';">Place Order</button>
+    </div>
+    <h1>Testimonials</h1>
+    <iframe height="800px" id='testimonialto-das-filter-tag-all-light-animated' src="https://embed-v2.testimonial.to/w/das-filter?animated=on&theme=light&shadowColor=f7f7f7&speed=1&tag=all" frameborder="0" scrolling="no" width="100%"></iframe>
+    <footer>
+        <p>&copy; <span id="current-year"></span> Das Filter. All rights reserved.</p>
+        <p>Minimum order: $250</p>
+        <p>
+            <a href="https://Dasfilter.shop" target="_blank">B2C Website</a> |
+            <a href="mailto:info@dasfilter.co">Email</a> |
+            <a href="tel:+17373348042">Call</a>
+        </p>
+    </footer>
+    <div class="striped-bg"></div>
+    <script>
+        function onSignIn(googleUser) {
+            // Redirect to dashboard after successful Google Sign-In
+            window.location.href = '/dashboard.html';
+        }
 
-        <footer>
-            <p>&copy; <span id="current-year"></span> Das Filter. All rights reserved.</p>
-           <p>Minimum order: $250</p>
-           <p>
-           <a href="https://Dasfilter.shop" target="_blank">B2C Website</a> |
-           <a href="mailto:info@dasfilter.co">Email</a> |
-           <a href="tel:+17373348042">Call</a>
-           </p>
-           </footer>
-           <div class="striped-bg"></div>
-           </body>
-           <script>
-            function onSignIn(googleUser) {
-              // Redirect to dashboard after successful Google Sign-In
-              window.location.href = '/dashboard.html';
-            }
-          </script>
-          
-           </html>
-        
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+
