@@ -2,7 +2,7 @@
 // Config
 $google_client_id = getenv('GOOGLE_CLIENT_ID');
 $google_client_secret = getenv('GOOGLE_CLIENT_SECRET');
-$db_path = __DIR__ . '/database.sqlite';
+$db_path = __DIR__ . '/database.sqlite3';
 $log_file = __DIR__ . '/app.log';
 $magic_link_expiration = 3600; // 1 hour in seconds
 
