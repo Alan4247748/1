@@ -10,41 +10,6 @@
     <script defer data-domain="wholesaleapi.dasfilter.shop" src="https://plausible.io/js/script.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 
-<script>
-    function handleCredentialResponse(response) {
-        // Send the ID token to your server
-        fetch('/verify-google-token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({token: response.credential})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.verified) {
-                console.log('Authentication successful');
-                window.location.href = '/dashboard.html';
-            } else {
-                console.error('Authentication failed:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-
-    window.onload = function () {
-        google.accounts.id.initialize({
-            client_id: '<?php echo getenv("GOOGLE_CLIENT_ID"); ?>',
-            callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-            document.getElementById("google-signin-button"),
-            { theme: "outline", size: "large" }
-        );
-    };
-</script>
 
 </head>
 <nav>
@@ -220,5 +185,40 @@
            </footer>
            <div class="striped-bg"></div>
            </body>
+           <script>
+            function handleCredentialResponse(response) {
+                // Send the ID token to your server
+                fetch('/verify-google-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: response.credential })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.verified) {
+                        console.log('Authentication successful');
+                        window.location.href = '/dashboard.html';
+                    } else {
+                        console.error('Authentication failed:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+    
+            window.onload = function () {
+                google.accounts.id.initialize({
+                    client_id: '<?php echo getenv("GOOGLE_CLIENT_ID"); ?>', // The PHP code injects the client ID
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(
+                    document.getElementById("google-signin-button"),
+                    { theme: "outline", size: "large" }
+                );
+            };
+        </script>
            </html>
         
