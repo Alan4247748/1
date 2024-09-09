@@ -10,35 +10,43 @@
     <script defer data-domain="wholesaleapi.dasfilter.shop" src="https://plausible.io/js/script.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
 <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 <script>
-function handleCredentialResponse(response) {
-    // Decode the credential response
-    const responsePayload = JSON.parse(atob(response.credential.split('.')[1]));
-    
-    console.log('ID: ' + responsePayload.sub);
-    console.log('Name: ' + responsePayload.name);
-    console.log('Image URL: ' + responsePayload.picture);
-    console.log('Email: ' + responsePayload.email);
-    console.log('Attempting to redirect to dashboard');
-    
-    // You may want to send this token to your server for verification before redirecting
-    window.location.href = 'https://wholesaleapi.dasfilter.shop/dashboard.html';
-}
+    function handleCredentialResponse(response) {
+        // Send the ID token to your server
+        fetch('/verify-google-token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({token: response.credential})
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.verified) {
+                console.log('Authentication successful');
+                window.location.href = '/dashboard.html';
+            } else {
+                console.error('Authentication failed:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
 
-function renderButton() {
-    google.accounts.id.initialize({
-        client_id: '<?php echo getenv("GOOGLE_CLIENT_ID"); ?>',
-        callback: handleCredentialResponse
-    });
-    google.accounts.id.renderButton(
-        document.getElementById('google-signin-button'),
-        { theme: 'outline', size: 'large' } // customization attributes
-    );
-}
+    window.onload = function () {
+        google.accounts.id.initialize({
+            client_id: '<?php echo getenv("GOOGLE_CLIENT_ID"); ?>',
+            callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+            document.getElementById("google-signin-button"),
+            { theme: "outline", size: "large" }
+        );
+    };
+    </script>
 </script>
 </head>
-<body onload="renderButton()">
 <nav>
 <ul>
 <li><a href="https://wholesaleapi.dasfilter.shop">Home</a></li>

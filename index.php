@@ -2,7 +2,7 @@
 // Config
 $google_client_id = getenv('GOOGLE_CLIENT_ID');
 $google_client_secret = getenv('GOOGLE_CLIENT_SECRET');
-$log_file = __DIR__ . '/app.log';
+$log_file = __DIR__ . '/app.log';  // Fixed syntax error
 
 // Error handling
 function handleError($errno, $errstr, $errfile, $errline) {
@@ -23,44 +23,56 @@ function log_message($message, $level = 'INFO') {
 
 try {
     session_start();
-
     $request_uri = $_SERVER['REQUEST_URI'];
     $method = $_SERVER['REQUEST_METHOD'];
 
+    // Handle GET requests
     if ($method === 'GET') {
-        if ($request_uri === '/' || $request_uri === '/dashboard') {
+        if ($request_uri === '/' || $request_uri === '/index.html') {
+            echo file_get_contents('index.html');
+            exit;
+        } elseif ($request_uri === '/dashboard' || $request_uri === '/dashboard.html') {
             if (isset($_SESSION['user_id'])) {
-                // Serve static HTML dashboard
                 echo file_get_contents('dashboard.html');
             } else {
-                // Redirect to login if not logged in
                 header('Location: /index.html');
                 exit;
             }
         }
     }
 
-    if ($method === 'POST' && $request_uri === '/verify-google-token') {
-        $input = json_decode(file_get_contents('php://input'), true);
-        $token = $input['token'] ?? '';
+    // Handle POST requests
+    if ($method === 'POST') {
+        if ($request_uri === '/verify-google-token') {
+            $input = json_decode(file_get_contents('php://input'), true);
+            $token = $input['token'] ?? '';
 
-        if ($token) {
-            $google_response = file_get_contents("https://oauth2.googleapis.com/tokeninfo?id_token=$token");
-            $google_user = json_decode($google_response, true);
+            if ($token) {
+                $google_response = file_get_contents("https://oauth2.googleapis.com/tokeninfo?id_token=$token");
+                $google_user = json_decode($google_response, true);
 
-            if (isset($google_user['email']) && $google_user['aud'] === $google_client_id) {
-                $_SESSION['user_id'] = $google_user['email'];  // Simplify session handling
-                echo json_encode(['verified' => true]);
+                if (isset($google_user['email']) && $google_user['aud'] === $google_client_id) {
+                    $_SESSION['user_id'] = $google_user['email'];
+                    echo json_encode(['verified' => true]);
+                } else {
+                    http_response_code(400);
+                    echo json_encode(['verified' => false, 'message' => 'Invalid token']);
+                }
             } else {
                 http_response_code(400);
-                echo json_encode(['verified' => false, 'message' => 'Invalid token']);
+                echo json_encode(['verified' => false, 'message' => 'Token required']);
             }
-        } else {
-            http_response_code(400);
-            echo json_encode(['error' => 'Token required']);
+            exit;
+        } elseif ($request_uri === '/logout') {
+            session_destroy();
+            echo json_encode(['logged_out' => true]);
+            exit;
         }
-        exit;
     }
+
+    // If no routes match, return 404
+    http_response_code(404);
+    echo json_encode(['error' => 'Not Found']);
 
 } catch (Exception $e) {
     log_message("Unhandled exception: " . $e->getMessage(), 'ERROR');
