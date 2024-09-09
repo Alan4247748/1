@@ -40,6 +40,12 @@
         }
 
         window.onload = startGoogleSignIn;
+        function logout() {
+            google.accounts.id.revoke('YOUR_CLIENT_ID', function () {
+                console.log('Logged out');
+                window.location.href = '/'; // Redirect to home or login page after logout
+            });
+        }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
 
