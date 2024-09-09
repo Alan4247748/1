@@ -19,7 +19,7 @@
 <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
 <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
 <li>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
     <!-- Google Sign-In button will be rendered here -->
 </div>
 </li>
@@ -184,27 +184,8 @@
            </body>
            <script>
             function onSignIn(googleUser) {
-              var profile = googleUser.getBasicProfile();
-              var name = profile.getName();
-              var email = profile.getEmail();
-          
-              fetch('/save_user.php', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name: name, email: email })
-              })
-              .then(response => response.json())
-              .then(data => {
-                if (data.status === 'success') {
-                  // Redirect to dashboard
-                  window.location.href = '/dashboard.html';
-                } else {
-                  console.error('Failed to save user data:', data.error);
-                }
-              })
-              .catch(error => console.error('Error:', error));
+              // Redirect to dashboard after successful Google Sign-In
+              window.location.href = '/dashboard.html';
             }
           </script>
           
