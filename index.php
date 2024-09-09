@@ -69,7 +69,7 @@ try {
                 echo $dashboardContent;
             } else {
                 // Redirect to login if not logged in
-                header('Location: /login');
+                header('Location: /index');
                 exit;
             }
         } elseif (strpos($request_uri, '/verify-magic-link') === 0) {
