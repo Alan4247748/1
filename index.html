@@ -19,10 +19,7 @@
 <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
 <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
 <li>
-<div id="google-signin-button"
-    hx-post="/verify-google-token"
-    hx-trigger="google-sign-in-success"
-    hx-target="#user-info">
+    <div class="g-signin2" data-onsuccess="onSignIn"></div>
     <!-- Google Sign-In button will be rendered here -->
 </div>
 </li>
@@ -186,39 +183,30 @@
            <div class="striped-bg"></div>
            </body>
            <script>
-            function handleCredentialResponse(response) {
-                // Send the ID token to your server
-                fetch('/verify-google-token', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ token: response.credential })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.verified) {
-                        console.log('Authentication successful');
-                        window.location.href = '/dashboard.html';
-                    } else {
-                        console.error('Authentication failed:', data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            function onSignIn(googleUser) {
+              var profile = googleUser.getBasicProfile();
+              var name = profile.getName();
+              var email = profile.getEmail();
+          
+              fetch('/save_user.php', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name, email: email })
+              })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  // Redirect to dashboard
+                  window.location.href = '/dashboard.html';
+                } else {
+                  console.error('Failed to save user data:', data.error);
+                }
+              })
+              .catch(error => console.error('Error:', error));
             }
-    
-            window.onload = function () {
-                google.accounts.id.initialize({
-                    client_id: '<?php echo getenv("GOOGLE_CLIENT_ID"); ?>', // The PHP code injects the client ID
-                    callback: handleCredentialResponse
-                });
-                google.accounts.id.renderButton(
-                    document.getElementById("google-signin-button"),
-                    { theme: "outline", size: "large" }
-                );
-            };
-        </script>
+          </script>
+          
            </html>
         
