@@ -6,7 +6,8 @@
     <title>Das Filter Accounts Dashboard</title>
     <link rel="stylesheet" href="dashboard-styles.css">
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
-    <script type="module" defer src="https://cdn.jsdelivr.net/npm/@sudodevnull/datastar"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
 </head>
 <body>
     <nav class="main-nav" aria-label="Main navigation">
@@ -18,6 +19,8 @@
                 <li><a href="https://wholesaleapi.dasfilter.shop/dashboard.html">Home</a></li>
                 <li><a href="https://dasfilter.shop">B2C</a></li>
                 <li><a href="https://buy.stripe.com/14k9AX5817txcgg3d3">Buy</a></li>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
             </ul>
         </div>
     </nav>
@@ -63,50 +66,49 @@
         </body>
         </html>
             
-            <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('current-year').textContent = new Date().getFullYear();
+        <script>
+            function onSignIn(googleUser) {
+                // Get the Google User profile
+                var profile = googleUser.getBasicProfile();
+                var id_token = googleUser.getAuthResponse().id_token;
             
-                htmx.on("htmx:afterSettle", function(event) {
-                    if (event.detail.target.id === "profile-form") {
-                        const form = event.detail.target.querySelector('form');
-                        if (form) {
-                            const dataStore = JSON.parse(form.getAttribute('data-store') || '{}');
-                            Object.keys(dataStore).forEach(key => {
-                                const input = form.querySelector(`[name="${key}"]`);
-                                if (input) {
-                                    input.value = dataStore[key];
-                                }
-                            });
+                // Update UI with user information
+                document.getElementById('user-name').textContent = profile.getName();
+                document.getElementById('user-email').textContent = profile.getEmail();
             
-                            form.addEventListener('submit', function(e) {
-                                e.preventDefault();
-                                htmx.ajax('POST', '/update-profile', {
-                                    target: '#profile-form',
-                                    swap: 'innerHTML',
-                                    values: {
-                                        firstName: form.firstName.value,
-                                        lastName: form.lastName.value,
-                                        email: form.email.value
-                                    }
-                                });
-                            });
-                        }
-                    }
+                // Send the ID token to your server for further processing
+                fetch('/your-server-endpoint', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id_token: id_token })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle server response
+                    console.log('Server response:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
+            }
             
-                htmx.on("htmx:responseError", function(event) {
-                    const errorMessage = event.detail.xhr.responseText || "An error occurred. Please try again.";
-                    htmx.find(event.detail.target).innerHTML = `<div class="error">${errorMessage}</div>`;
+            function signOut() {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log('User signed out.');
+                    // Update UI for sign-out
+                    document.getElementById('user-name').textContent = '';
+                    document.getElementById('user-email').textContent = '';
                 });
-            
-                htmx.on("profileUpdated", function() {
-                    const profileForm = document.getElementById("profile-form");
-                    const dataStore = JSON.parse(profileForm.getAttribute('data-store') || '{}');
-                    document.getElementById("user-name").textContent = `${dataStore.firstName} ${dataStore.lastName}`;
-                    document.getElementById("user-email").textContent = dataStore.email;
-                    profileForm.innerHTML = "<p>Profile updated successfully!</p>";
-                });
-            });
+            }
             </script>
-    
+            <script>
+                gapi.load('auth2', function() {
+                    gapi.auth2.init({
+                        client_id: '867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com'
+                    });
+                });
+                </script>
+                
