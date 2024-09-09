@@ -27,7 +27,7 @@
             const userObject = jwt_decode(response.credential);
             console.log('Name: ' + userObject.name);
             console.log('Email: ' + userObject.email);
-
+    
             fetch('/verify-google-token', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -40,16 +40,17 @@
                     document.getElementById('g-signin-button').style.display = 'none';
                     document.getElementById('logout-button').style.display = 'block';
                     document.getElementById('dashboard-link').style.display = 'block';
-                    window.location.href = '/dashboard.html';
+                    window.location.href = '/dashboard.html';  // Redirect to dashboard
                 } else {
                     console.error('Token verification failed');
                 }
-            });
+            })
+            .catch(error => console.error('Error during token verification:', error));
         }
-
+    
         function startGoogleSignIn() {
             google.accounts.id.initialize({
-                client_id: 'Y867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
+                client_id: '867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
                 callback: handleCredentialResponse
             });
             google.accounts.id.renderButton(
@@ -57,7 +58,7 @@
                 { theme: 'outline', size: 'medium' }
             );
         }
-
+    
         function logout() {
             fetch('/logout', { method: 'POST' })
                 .then(res => res.json())
@@ -67,16 +68,16 @@
                         document.getElementById('g-signin-button').style.display = 'block';
                         document.getElementById('logout-button').style.display = 'none';
                         document.getElementById('dashboard-link').style.display = 'none';
-                        window.location.href = '/index.html';
+                        window.location.href = '/index.html';  // Redirect to login page
                     } else {
                         console.error('Logout failed');
                     }
-                });
+                })
+                .catch(error => console.error('Error during logout:', error));
         }
-
+    
         window.onload = startGoogleSignIn;
-    </script>
-</body>
+    </script>    
 
     <h1>Product Catalog</h1>
     <div class="row">

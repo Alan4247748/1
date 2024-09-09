@@ -2,7 +2,7 @@
 // Config
 $google_client_id = getenv('GOOGLE_CLIENT_ID');
 $google_client_secret = getenv('GOOGLE_CLIENT_SECRET');
-$log_file = __DIR__ . '/app.log';  // Fixed syntax error
+$log_file = __DIR__ . '/app.log';  // Log file path
 
 // Error handling
 function handleError($errno, $errstr, $errfile, $errline) {
