@@ -17,68 +17,11 @@
             <li><a href="https://wholesaleapi.dasfilter.shop">Home</a></li>
             <li><a href="https://dasfilter.shop">B2C</a></li>
             <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
-            <li><a href="/dashboard.html" id="dashboard-link">Login</a></li>
-            <li><div id="g-signin-button"></div></li>
-            <li><button id="logout-button" style="display: none;" onclick="logout()">Logout</button></li>
+            <li><a href="/dashboard.html" id="dashboard-link" style="display: none;">Dashboard</a></li>
+            <li><div id="g-signin2" data-onsuccess="onSignIn"></div></li>
+            <li><a href="#" onclick="signOut();" style="display: none;">Sign out</a></li>
         </ul>
     </nav>
-    <script>
-        function handleCredentialResponse(response) {
-            const userObject = jwt_decode(response.credential);
-            console.log('Name: ' + userObject.name);
-            console.log('Email: ' + userObject.email);
-    
-            fetch('/verify-google-token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: response.credential })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.verified) {
-                    localStorage.setItem('loggedIn', 'true');
-                    document.getElementById('g-signin-button').style.display = 'none';
-                    document.getElementById('logout-button').style.display = 'block';
-                    document.getElementById('dashboard-link').style.display = 'block';
-                    window.location.href = '/dashboard.html';  // Redirect to dashboard
-                } else {
-                    console.error('Token verification failed');
-                }
-            })
-            .catch(error => console.error('Error during token verification:', error));
-        }
-    
-        function startGoogleSignIn() {
-            google.accounts.id.initialize({
-                client_id: '867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com',
-                callback: handleCredentialResponse
-            });
-            google.accounts.id.renderButton(
-                document.getElementById('g-signin-button'),
-                { theme: 'outline', size: 'medium' }
-            );
-        }
-    
-        function logout() {
-            fetch('/logout', { method: 'POST' })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.logged_out) {
-                        localStorage.removeItem('loggedIn');
-                        document.getElementById('g-signin-button').style.display = 'block';
-                        document.getElementById('logout-button').style.display = 'none';
-                        document.getElementById('dashboard-link').style.display = 'none';
-                        window.location.href = '/index.html';  // Redirect to login page
-                    } else {
-                        console.error('Logout failed');
-                    }
-                })
-                .catch(error => console.error('Error during logout:', error));
-        }
-    
-        window.onload = startGoogleSignIn;
-    </script>    
-
     <h1>Product Catalog</h1>
     <div class="row">
         <h2>40 Count Cases</h2>
@@ -235,6 +178,40 @@
         </p>
     </footer>
     <div class="striped-bg"></div>
+    <script>
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            fetch('/verify-google-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({token: id_token}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.verified) {
+                    document.getElementById('dashboard-link').style.display = 'inline-block';
+                    document.querySelector('a[onclick="signOut();"]').style.display = 'inline-block';
+                    document.getElementById('g-signin2').style.display = 'none';
+                }
+            });
+        }
+
+        function signOut() {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function () {
+                fetch('/logout', { method: 'POST' })
+                .then(() => {
+                    document.getElementById('dashboard-link').style.display = 'none';
+                    document.querySelector('a[onclick="signOut();"]').style.display = 'none';
+                    document.getElementById('g-signin2').style.display = 'inline-block';
+                });
+            });
+        }
+
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
     
     <script>
         // Update the current year in the footer

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="dashboard-styles.css">
     <script src="https://unpkg.com/htmx.org@1.9.6"></script>
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-
 </head>
 <body>
     <nav class="main-nav" aria-label="Main navigation">
@@ -19,17 +18,15 @@
                 <li><a href="https://wholesaleapi.dasfilter.shop/dashboard.html">Home</a></li>
                 <li><a href="https://dasfilter.shop">B2C</a></li>
                 <li><a href="https://buy.stripe.com/14k9AX5817txcgg3d3">Buy</a></li>
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
-
+                <li><div class="g-signin2" data-onsuccess="onSignIn"></div></li>
             </ul>
         </div>
     </nav>
-
     <div class="container">
         <main>
             <header>
                 <h1>Your Dashboard</h1>
-                <button class="logout-btn" id="logout-btn">Logout</button>
+                <button class="logout-btn" onclick="signOut();" id="logout-btn">Logout</button>
             </header>
             <section class="dashboard-grid">
                 <div class="dashboard-card">
@@ -51,64 +48,53 @@
                     <div id="product-catalog"></div>
                 </div>
             </section>
-            <footer>
-                <p>&copy; <span id="current-year"></span> Das Filter. All rights reserved.</p>
-                <p>Minimum order: $250</p>
-                <p>
-                    <a href="https://Dasfilter.shop" target="_blank">B2C Website</a> | 
-                    <a href="mailto:info@dasfilter.co">Email</a> |
-                    <a href="tel:+17373348042">Call</a>
-                </p>
-            </footer>
-            <div class="stripped-ending-bg"></div>
-        </body>
-        </html>
-        </body>
-        </html>
-            
-        <script>
-            function onSignIn(googleUser) {
-                // Get the Google User profile
-                var profile = googleUser.getBasicProfile();
-                var id_token = googleUser.getAuthResponse().id_token;
-            
-                // Update UI with user information
-                document.getElementById('user-name').textContent = profile.getName();
-                document.getElementById('user-email').textContent = profile.getEmail();
-            
-                // Send the ID token to your server for further processing
-                fetch('/your-server-endpoint', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ id_token: id_token })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // Handle server response
-                    console.log('Server response:', data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
+        </main>
+        <footer>
+            <p>&copy; <span id="current-year"></span> Das Filter. All rights reserved.</p>
+            <p>Minimum order: $250</p>
+            <p>
+                <a href="https://Dasfilter.shop" target="_blank">B2C Website</a> |
+                <a href="mailto:info@dasfilter.co">Email</a> |
+                <a href="tel:+17373348042">Call</a>
+            </p>
+        </footer>
+        <div class="stripped-ending-bg"></div>
+    </div>
+    <script>
+        // Check if user is logged in
+        fetch('/check-auth')
+            .then(response => response.json())
+            .then(data => {
+                if (!data.loggedIn) {
+                    window.location.href = '/index.html';
+                }
+            });
+
+        function signOut() {
+            fetch('/logout', { method: 'POST' })
+                .then(() => {
+                    window.location.href = '/index.html';
                 });
-            }
-            
-            function signOut() {
-                var auth2 = gapi.auth2.getAuthInstance();
-                auth2.signOut().then(function () {
-                    console.log('User signed out.');
-                    // Update UI for sign-out
-                    document.getElementById('user-name').textContent = '';
-                    document.getElementById('user-email').textContent = '';
-                });
-            }
-            </script>
-            <script>
-                gapi.load('auth2', function() {
-                    gapi.auth2.init({
-                        client_id: '867293709219-48stjevc4l5eotmeg00jcptae0h08jbk.apps.googleusercontent.com'
-                    });
-                });
-                </script>
-                
+        }
+
+        function onSignIn(googleUser) {
+            var id_token = googleUser.getAuthResponse().id_token;
+            fetch('/verify-google-token', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({token: id_token}),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.verified) {
+                    location.reload();
+                }
+            });
+        }
+
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

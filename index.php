@@ -38,6 +38,9 @@ try {
                 header('Location: /index.html');
                 exit;
             }
+        } elseif ($request_uri === '/check-auth') {
+            echo json_encode(['loggedIn' => isset($_SESSION['user_id'])]);
+            exit;
         }
     }
 
