@@ -7,9 +7,11 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jwt-decode/3.1.2/jwt-decode.min.js"></script>
-    <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
-    <script defer data-domain="wholesaleapi.dasfilter.shop" src="https://plausible.io/js/script.hash.outbound-links.pageview-props.revenue.tagged-events.js"></script>
-    <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_zNjXoK7O4daXvum6EZKX2iyTx6t4mRYI38DwraZtlyJ',{api_host:'https://us.i.posthog.com', person_profiles: 'always' // or 'always' to create profiles for anonymous users as well
+            })
+    </script>
 </head>
 <body>
     <nav>
@@ -18,8 +20,6 @@
             <li><a href="https://dasfilter.shop">B2C</a></li>
             <li><a href="https://testimonial.to/das-filter/all">Reviews</a></li>
             <li><a href="/dashboard.html" id="dashboard-link" style="display: none;">Dashboard</a></li>
-            <li><div id="g-signin2" data-onsuccess="onSignIn"></div></li>
-            <li><a href="#" onclick="signOut();" style="display: none;">Sign out</a></li>
         </ul>
     </nav>
     <h1>Product Catalog</h1>
@@ -32,7 +32,7 @@
                         <img src="https://das-filter.s3.amazonaws.com/bbc.png" alt="Big Boy Glass Case - Front View">
                     </div>
                     <div class="back">
-                        <img src="https://das-filter.s3.amazonaws.com/bbp2.png" alt="Big Boy Glass Case - Back View">
+                        <img src="https://das-filter.s3.amazonaws.com/bbog.png" alt="Big Boy Glass Case - Back View">
                     </div>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                         <img src="https://das-filter.s3.amazonaws.com/sj1.png" alt="Slim Jim Glass Case - Front View">
                     </div>
                     <div class="back">
-                        <img src="https://das-filter.s3.amazonaws.com/sj2.png" alt="Slim Jim Glass Case - Back View">
+                        <img src="https://das-filter.s3.amazonaws.com/sjpro2.png" alt="Slim Jim Glass Case - Back View">
                     </div>
                 </div>
             </div>
@@ -69,16 +69,17 @@
         </div>
     </div>
     
+    <!-- 20 Count Cases Section -->
     <div class="row">
         <h2>20 Count Cases</h2>
         <div class="product-card" data-quality="3" data-price="60" data-stripe-id="prod_Pg2Ru8zxcUtAly">
             <div class="flip-container">
                 <div class="flipper">
                     <div class="front">
-                        <img src="https://das-filter.s3.amazonaws.com/sj1.png" alt="Big Boy Paper Case - Front View">
+                        <img src="https://das-filter.s3.amazonaws.com/bbpro.png" alt="Big Boy Paper Case - Front View">
                     </div>
                     <div class="back">
-                        <img src="https://das-filter.s3.amazonaws.com/sj2.png" alt="Big Boy Paper Case - Back View">
+                        <img src="https://das-filter.s3.amazonaws.com/bb11.png" alt="Big Boy Paper Case - Back View">
                     </div>
                 </div>
             </div>
@@ -92,14 +93,15 @@
                 </div>
             </div>
         </div>
+        
         <div class="product-card" data-quality="4" data-price="60" data-stripe-id="prod_Pg2OnEDLsIkgKz">
             <div class="flip-container">
                 <div class="flipper">
                     <div class="front">
-                        <img src="https://das-filter.s3.amazonaws.com/r3.png" alt="Slim Jim Paper Case - Front View">
+                        <img src="https://das-filter.s3.amazonaws.com/sjpro.png" alt="Slim Jim Paper Case - Front View">
                     </div>
                     <div class="back">
-                        <img src="https://das-filter.s3.amazonaws.com/r3-back.png" alt="Slim Jim Paper Case - Back View">
+                        <img src="https://das-filter.s3.amazonaws.com/sjpro1.png" alt="Slim Jim Paper Case - Back View">
                     </div>
                 </div>
             </div>
@@ -114,9 +116,8 @@
             </div>
         </div>
     </div>
-    
     <div class="row">
-        <h2>50 Count Cases</h2>
+        <h2>40 Booklet Cases</h2> <!-- Changed to avoid duplicate heading -->
         <div class="product-card" data-quality="5" data-price="75" data-stripe-id="prod_Pg2XWVfEyFJC1n">
             <div class="flip-container">
                 <div class="flipper">
@@ -124,20 +125,21 @@
                         <img src="https://das-filter.s3.amazonaws.com/qs1.png" alt="Quarter Slim - Front View">
                     </div>
                     <div class="back">
-                        <img src="https://das-filter.s3.amazonaws.com/quarterb.png" alt="Quarter Slim - Back View">
+                        <img src="https://das-filter.s3.amazonaws.com/ppro2.png" alt="Quarter Slim - Back View">
                     </div>
                 </div>
             </div>
             <div class="product-info">
                 <h3>1 & 1/4 Quarter Slim</h3>
                 <p>$75.00</p>
-                <p>50 booklets per case 32 papers per booklet</p>
+                <p>40 booklets per case 32 papers per booklet</p>
                 <div class="quantity">
                     <label for="quantity-quarter-slim">Quantity:</label>
                     <input type="number" id="quantity-quarter-slim" name="quantity-quarter-slim" value="0" min="0" max="100">
                 </div>
             </div>
         </div>
+        
         <div class="product-card" data-quality="6" data-price="75" data-stripe-id="prod_Pg2WJHin6BvKwb">
             <div class="flip-container">
                 <div class="flipper">
@@ -145,14 +147,14 @@
                         <img src="https://das-filter.s3.amazonaws.com/dpks.png" alt="King Slim - Front View">
                     </div>
                     <div class="back">
-                        <img src="https://das-filter.s3.amazonaws.com/kksback.png" alt="King Slim - Back View">
+                        <img src="https://das-filter.s3.amazonaws.com/ppro.png" alt="King Slim - Back View">
                     </div>
                 </div>
             </div>
             <div class="product-info">
                 <h3>King Slim</h3>
                 <p>$75.00</p>
-                <p>50 booklets per case 32 papers per booklet</p>
+                <p>40 booklets per case 32 papers per booklet</p>
                 <div class="quantity">
                     <label for="quantity-king-slim">Quantity:</label>
                     <input type="number" id="quantity-king-slim" name="quantity-king-slim" value="0" min="0" max="100">
@@ -160,7 +162,6 @@
             </div>
         </div>
     </div>
-    
     <div class="row">
         <button id="placeOrderButton" onclick="window.location.href='https://buy.stripe.com/14k9AX5817txcgg3d3';">Place Order</button>
     </div>
@@ -178,41 +179,6 @@
         </p>
     </footer>
     <div class="striped-bg"></div>
-    <script>
-        function onSignIn(googleUser) {
-            var id_token = googleUser.getAuthResponse().id_token;
-            fetch('/verify-google-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({token: id_token}),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.verified) {
-                    document.getElementById('dashboard-link').style.display = 'inline-block';
-                    document.querySelector('a[onclick="signOut();"]').style.display = 'inline-block';
-                    document.getElementById('g-signin2').style.display = 'none';
-                }
-            });
-        }
-
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                fetch('/logout', { method: 'POST' })
-                .then(() => {
-                    document.getElementById('dashboard-link').style.display = 'none';
-                    document.querySelector('a[onclick="signOut();"]').style.display = 'none';
-                    document.getElementById('g-signin2').style.display = 'inline-block';
-                });
-            });
-        }
-
-        document.getElementById('current-year').textContent = new Date().getFullYear();
-    </script>
-    
     <script>
         // Update the current year in the footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
